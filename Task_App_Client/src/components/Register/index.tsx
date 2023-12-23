@@ -15,13 +15,13 @@ const Register: React.FC = () => {
 
     const getTask = async () => {
         try{
-            console.log('Variables de entorno', process.env.API)
+            // console.log('Variables de entorno', process.env.API)
             const request = await axios.post(process.env.API + 'task/taskByUser', { user: 1 });
             const response = request.data;
-            setData(response);
-            console.log('Esta es la data que nos devuelve', JSON.stringify(response, null, 2))
+            // setData(response);
+            // console.log('Esta es la data que nos devuelve', JSON.stringify(response, null, 2))
         }catch(error){
-            console.log('Error en la peticion', error)
+            // console.log('Error en la peticion', error)
         }
     }
 
