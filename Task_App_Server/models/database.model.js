@@ -9,6 +9,34 @@ connection = mysql.createConnection({
 
 let databaseFunctions = {};
 
+databaseFunctions.createUser = (insertUser, callBack) => {
+  if (connection) {
+    connection.query("INSERT INTO user SET ?", insertUser, (error, rows) => {
+      if (error) {
+        throw error;
+      } else {
+        callBack(null, rows);
+      }
+    });
+  }
+};
+
+databaseFunctions.login = (credential, callBack) => {
+  if (connection) {
+    connection.query(
+      `SLECT * FROM user WHERE email = ${credential.email} AND password = ${credential.password}`,
+      credential,
+      (error, rows) => {
+        if (error) {
+          throw error;
+        } else {
+          callBack(null, rows);
+        }
+      }
+    );
+  }
+};
+
 databaseFunctions.getTasksByUser = (user, callBack) => {
   if (connection) {
     connection.query(
