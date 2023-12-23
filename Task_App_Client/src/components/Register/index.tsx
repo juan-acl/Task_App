@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import axios from 'axios';
+import { Profile, UserAction } from "../../interfaces/user";
+import { Login } from '../../redux/actions/user.acctions'
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 
 interface User {
     user_id: number,
@@ -10,19 +14,16 @@ interface User {
     email: string
 }
 
-const Register: React.FC = () => {
+interface Props {
+    _login: (password: string, email: string) => void,
+}
+
+const Register: React.FC = (props: Props) => {
     const [data, setData] = useState<User[]>([]);
 
     const getTask = async () => {
-        try{
-            // console.log('Variables de entorno', process.env.API)
-            const request = await axios.post(process.env.API + 'task/taskByUser', { user: 1 });
-            const response = request.data;
-            // setData(response);
-            // console.log('Esta es la data que nos devuelve', JSON.stringify(response, null, 2))
-        }catch(error){
-            // console.log('Error en la peticion', error)
-        }
+        console.log('Validando las props', props)
+        props._login('1234', 'jchuc@correo.com')
     }
 
     useEffect(() => {
@@ -36,4 +37,12 @@ const Register: React.FC = () => {
     )
 }
 
-export default Register;
+const mapStateToProps = (state: any)  => ({
+    profile: state.user.profile
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+    _login: (password: string, email: string) => dispatch(Login(password, email))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps) (Register);

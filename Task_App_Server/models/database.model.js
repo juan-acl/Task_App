@@ -24,7 +24,7 @@ databaseFunctions.createUser = (insertUser, callBack) => {
 databaseFunctions.login = (credential, callBack) => {
   if (connection) {
     connection.query(
-      `SLECT * FROM user WHERE email = ${credential.email} AND password = ${credential.password}`,
+      `SELECT * FROM user WHERE email = '${credential.email}' AND password = '${credential.password}'`,
       credential,
       (error, rows) => {
         if (error) {

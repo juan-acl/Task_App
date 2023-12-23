@@ -1,17 +1,12 @@
 import * as ACTION from '../actions/user.acctions';
 
-interface SetDefaultAction {
-    type: typeof ACTION,
-    default: number
-}
-
-const initialState= {
+const initialState = {
     profile: {},
     edit: {},
     default: 0
 }
 
-export const UserReducer = (state = initialState, action) => {
+export default (state = initialState, action: any) => {
     switch(action.type) {
         case ACTION.USER_SET_DEFAULT: 
             return {

@@ -1,15 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Text } from "react-native";
 import RegisterComponent from '../../components/Register';
 import { Profile, UserAction } from "../../interfaces/user";
+import { Login } from '../../redux/actions/user.acctions'
+import { Dispatch } from "redux";
 
-interface Props {
-    default: number
-}
+const Register = () => {
 
-const Register = (props: Props ) => {
-    console.log('Validando las props', JSON.stringify(props, null, 2))
     return (
         <>
         <Text>Register Screen</Text>
@@ -18,8 +16,5 @@ const Register = (props: Props ) => {
     )
 }
 
-const mapStateToProps = (state: any)  => ({
-    user: state.user.default
-})
 
-export default connect(mapStateToProps, null)(Register);
+export default Register;
