@@ -3,7 +3,8 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
-const TaskRouter = require("../routes/task.route");
+const UserRouter = require("../routes/user.routes");
+const TaskRouter = require("../routes/task.routes");
 
 /* Express server */
 const port = process.env.PORT ?? 4000;
@@ -17,9 +18,10 @@ app.use(cors());
 
 /* Usage routes */
 app.use("/api/task", TaskRouter);
+app.use("/api/user", UserRouter);
 
 /* Initial endpoint */
-app.get("/", (_, res) => {
+app.all("/", (_, res) => {
   res.statusCode = 200;
   return res
     .status(200)
@@ -27,7 +29,7 @@ app.get("/", (_, res) => {
 });
 
 /* Endpoint not existent */
-app.get("/*", (_, res) => {
+app.all("/*", (_, res) => {
   res.statusCode = 404;
   return res.status(404).json({ code: 404, message: "Endpoint not found" });
 });

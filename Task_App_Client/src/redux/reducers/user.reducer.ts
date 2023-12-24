@@ -1,12 +1,14 @@
 import * as ACTION from '../actions/user.acctions';
+import { UserState, UserAction } from '../../interfaces/user.type';
 
-const initialState = {
+const initialState: UserState = {
     profile: [],
     edit: [],
-    default: 0
+    default: 0,
+    login: false
 }
 
-export default (state = initialState, action: any) => {
+export default (state = initialState, action: UserAction ) => {
     switch(action.type) {
         case ACTION.USER_SET_DEFAULT: 
             return {
@@ -22,6 +24,11 @@ export default (state = initialState, action: any) => {
             return {
                 ...state,
                 edit: action.edit
+            }
+        case ACTION.USER_SET_LOGIN:
+            return {
+                ...state,
+                login: action.login
             }
         default: 
             return state

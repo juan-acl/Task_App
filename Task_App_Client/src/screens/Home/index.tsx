@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import PageLoader from '../../components/Loader'
 
 const Home = () => {
     return (
@@ -7,6 +8,7 @@ const Home = () => {
             <Text>
                 HomeScreen
             </Text>
+            <PageLoader />
         </>
     )
 }

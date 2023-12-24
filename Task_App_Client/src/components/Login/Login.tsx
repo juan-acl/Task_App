@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Login = (props: Props) => {
-    console.log('Validando las props desde el login', JSON.stringify(props, null, 2))
+    console.log('Validnado las nuevas props con sus types :)', props)
     return (
         <>
         </>

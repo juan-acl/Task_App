@@ -1,48 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import axios from 'axios';
-import { Profile, UserAction } from "../../interfaces/user";
-import { Login } from '../../redux/actions/user.acctions'
-import { Dispatch } from "redux";
+import { View, TextInput } from 'react-native';
+import { RegisterUser } from '../../redux/actions/user.acctions'
+import { UserProps } from '../../interfaces/user.type';
 import { connect } from "react-redux";
 
-interface User {
-    user_id: number,
-    name: string,
-    lastname: string,
-    phone_number: string,
-    email: string
-}
-
-interface Props {
-    _login: (password: string, email: string) => void,
-}
-
-const Register: React.FC = (props: Props) => {
-    const [data, setData] = useState<User[]>([]);
-
-    const getTask = async () => {
-        console.log('Validando las props', props)
-        props._login('1234', 'jchuc@correo.com')
-    }
-
-    useEffect(() => {
-        getTask();
-    }, []);
-
+const Register: React.FC<UserProps> = (props: UserProps) => {
+    const [data, setData] = useState({
+        user_id: 0,
+        name: 'Juan',
+        lastname: '',
+        phone_number: '',
+        email: ''
+    });
+    console.log('Validando las props de el usuario', props)
     return (
         <View>
-            <Text></Text>
         </View>
     )
 }
 
-const mapStateToProps = (state: any)  => ({
-    profile: state.user.profile
-})
-
 const mapDispatchToProps = (dispatch: any) => ({
-    _login: (password: string, email: string) => dispatch(Login(password, email))
+    _register: (name: string, email: string, password: string, lastname: string, phone_number: string) => dispatch(RegisterUser(name, email, password, lastname, phone_number))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps) (Register);
+export default connect(null, mapDispatchToProps) (Register);
