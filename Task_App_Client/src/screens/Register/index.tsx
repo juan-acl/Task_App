@@ -7,7 +7,6 @@ const Register = () => {
 
     return (
         <>
-        <Text>Register Screen</Text>
         <RegisterComponent />
         </>
     )

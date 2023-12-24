@@ -26,7 +26,14 @@ export interface UserState {
 /* Props in component */
 export interface UserProps {
     _register: (name: string, email: string, password: string, lastname: string, phone_number: string) => void;
+    _showLoader: (show: boolean) => void;
 }
 
+/* Types mapStateToProps */
+export interface State {
+    user: {
+        login: boolean
+    }
+}
 
 
