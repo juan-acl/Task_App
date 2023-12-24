@@ -55,7 +55,9 @@ module.exports.login = (req, res) => {
           error: error,
         });
       }
-      return res.status(200).send({ code: 200, message: "Success" });
+      return res
+        .status(200)
+        .send({ code: 200, message: "Success", user: data });
     });
   } else {
     res.statusCode = 400;

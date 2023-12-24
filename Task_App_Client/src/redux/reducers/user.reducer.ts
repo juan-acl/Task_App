@@ -1,8 +1,8 @@
 import * as ACTION from '../actions/user.acctions';
 
 const initialState = {
-    profile: {},
-    edit: {},
+    profile: [],
+    edit: [],
     default: 0
 }
 

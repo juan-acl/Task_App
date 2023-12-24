@@ -22,7 +22,7 @@ interface UserAction {
 export const Login = (password: string, email: string) => async (dispatch: Dispatch ) => {
     try{
         const request = await axios.post(process.env.API + 'task/login', { email: 'jchuc@correo.com', password: '1234' })
-        const response = request.data
+        const response = request.data.user
         console.log('Validando peticion de redux', response)
         dispatch(setProfile(response))
     }catch(error){
