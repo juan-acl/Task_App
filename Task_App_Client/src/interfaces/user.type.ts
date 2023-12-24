@@ -23,7 +23,10 @@ export interface UserState {
     login: boolean;
 }
 
+/* Props in component */
 export interface UserProps {
     _register: (name: string, email: string, password: string, lastname: string, phone_number: string) => void;
 }
+
+
 

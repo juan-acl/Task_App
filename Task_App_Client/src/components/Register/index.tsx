@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
 import { RegisterUser } from '../../redux/actions/user.acctions'
 import { UserProps } from '../../interfaces/user.type';
 import { connect } from "react-redux";
@@ -23,4 +23,4 @@ const mapDispatchToProps = (dispatch: any) => ({
     _register: (name: string, email: string, password: string, lastname: string, phone_number: string) => dispatch(RegisterUser(name, email, password, lastname, phone_number))
 })
 
-export default connect(null, mapDispatchToProps) (Register);
+export default connect(null, mapDispatchToProps)(Register);

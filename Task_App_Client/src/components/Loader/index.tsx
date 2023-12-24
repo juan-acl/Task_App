@@ -1,18 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { BarIndicator } from 'react-native-indicators';
+import { State, LoaderProps } from '../../interfaces/loader.type';
 
-interface Props {
-    isLoading: boolean;
-}
-
-interface State {
-    loader: {
-        isLoading: boolean;
-    };
-}
-
-const Loader: React.FC<Props> = (props: Props) => props.isLoading && <BarIndicator color='#00A680' size={30} />
+const Loader: React.FC<LoaderProps> = (props: LoaderProps) => props.isLoading && <BarIndicator color='#00A680' size={30} />
 
 
 const mapStateToProps = (state: State) => ({
