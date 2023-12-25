@@ -5,37 +5,75 @@ import { UserProps, State } from '../../interfaces/user.type';
 import { showLoader } from '../../redux/actions/loader.action'
 import { connect } from "react-redux";
 import styled from 'styled-components/native';
+import _ from 'lodash'
 
 const Register: React.FC<UserProps> = (props: UserProps) => {
     const initialState ={
-        user_id: 0,
-        name: 'Juan',
+        name: '',
         lastname: '',
         phone_number: '',
-        email: ''
+        email: '',
+        password: ''
     }
+    const [error, setError] = useState({
+      name: false,
+      lastname: false,
+      phone_number: false,
+      email: false,
+      password: false
+    });
     const [data, setData] = useState(initialState);
-    console.log('Validando las props de el usuario', props)
+
+    const handleChange = (name: string, text: string) => {
+      setData(prev=> ({
+        ...prev,
+        [name]: text
+      }))
+    }
+
+    const validate = () => {
+      Object.keys(data).forEach(item =>{
+        console.log('Valdindao el itemn', item)
+      })
+    }
+
+    const onSaveUser = async () => {
+      validate()
+    console.log('Validando lo que estamos enviando', error)
+    }
 
 return (
     <Container>
       <Title>Registro</Title>
       <StyledTextInput
         placeholder="Nombre"
-        // onChangeText={(text) => setName(text)}
+        value={data.name}
+        onChangeText={(text) => handleChange('name', text)}
+      />
+        <StyledTextInput
+        placeholder="Apellido"
+        value={data.lastname}
+        onChangeText={(text) => handleChange('lastname', text)}
+      />
+        <StyledTextInput
+        placeholder="Numero de telefono"
+        value={data.phone_number}
+        onChangeText={(text) => handleChange('phone_number', text)}
       />
       <StyledTextInput
         placeholder="Correo electrónico"
         keyboardType="email-address"
-        // onChangeText={(text) => setEmail(text)}
+        value={data.email}
+        onChangeText={(text) => handleChange('email', text)}
       />
       <StyledTextInput
         placeholder="Contraseña"
         secureTextEntry
-        // onChangeText={(text) => setPassword(text)}
+        value={data.password}
+        onChangeText={(text) => handleChange('password', text)}
       />
       <StyledButton 
-    //   onPress={handleRegistration}
+      onPress={onSaveUser}
       >
         <ButtonText>Registrar</ButtonText>
       </StyledButton>
