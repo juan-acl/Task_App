@@ -10,6 +10,7 @@ const Login = (props: Props) => {
     console.log('Validnado las nuevas props con sus types :)', props)
     return (
         <>
+        <Text>Estamos en el login :)</Text>
         </>
     )
 }

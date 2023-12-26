@@ -1,88 +1,127 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity} from 'react-native';
-import { RegisterUser } from '../../redux/actions/user.acctions'
-import { UserProps, State } from '../../interfaces/user.type';
-import { showLoader } from '../../redux/actions/loader.action'
+import React from 'react';
+import { TouchableOpacity, Button} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { connect } from "react-redux";
-import styled from 'styled-components/native';
+import { RegisterUser } from '../../redux/actions/user.acctions'
+import { showLoader } from '../../redux/actions/loader.action'
+import { UserProps } from '../../interfaces/user.type';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
 import _ from 'lodash'
+import Loader from '../Loader';
+import styled from 'styled-components/native';
 
 const Register: React.FC<UserProps> = (props: UserProps) => {
-    const initialState ={
+
+    const navigate = useNavigation();
+
+    const formik = useFormik({
+      initialValues: {
         name: '',
         lastname: '',
         phone_number: '',
         email: '',
         password: ''
-    }
-    const [error, setError] = useState({
-      name: false,
-      lastname: false,
-      phone_number: false,
-      email: false,
-      password: false
+      },
+      validationSchema: Yup.object({
+        name: Yup.string().required('El nombre es requerido!'),
+        lastname: Yup.string().required('El apellido es requerido!'),
+        phone_number: Yup.string().required('El numero de telefono es requerido!'),
+        email: Yup.string().required('El correo es requerido!'),
+        password: Yup.string().required('El contraseña es requerido!'),
+
+      }),
+      validateOnChange: true,
+      onSubmit: (values) => {
+        const { name, lastname, email, password, phone_number } = values
+        try{
+          props._register(name, email, password, lastname, phone_number)
+        }catch(error){
+          console.log('Error en el formulario', error)
+        }finally{
+          setTimeout(() => {
+            formik.resetForm()
+            navigate.navigate('LogIn_Screen' as never)
+          }, 2000)
+          console.log('Se registro correctamente el usuario')
+        }
+      }
     });
-    const [data, setData] = useState(initialState);
 
-    const handleChange = (name: string, text: string) => {
-      setData(prev=> ({
-        ...prev,
-        [name]: text
-      }))
-    }
+    const handleChangeName = (value:string) => {
+      formik.setFieldValue('name', value)
+    };
 
-    const validate = () => {
-      Object.keys(data).forEach(item =>{
-        console.log('Valdindao el itemn', item)
-      })
-    }
+    const handleChangeLastname = (value: string) => {
+      formik.setFieldValue('lastname', value)
+    };
 
-    const onSaveUser = async () => {
-      validate()
-    console.log('Validando lo que estamos enviando', error)
-    }
+    const handleChangePhone = (value: string) => {
+      formik.setFieldValue('phone_number', value)
+    };
+
+    const handleChangeEmail = (value: string) => {
+      formik.setFieldValue('email', value)
+    };
+
+    const handleChangePassword = (value: string) => {
+      formik.setFieldValue('password', value)
+    };
 
 return (
-    <Container>
-      <Title>Registro</Title>
+  <>
+  { props.isLoading ? <Loader /> : 
+        <Container>
+      <Title>Creemos una cuenta ahora!</Title>
+      <StyledText>{formik.errors.name}</StyledText>
       <StyledTextInput
         placeholder="Nombre"
-        value={data.name}
-        onChangeText={(text) => handleChange('name', text)}
+        value={formik.values.name}
+        onChangeText={handleChangeName}
       />
+      <StyledText>{formik.errors.lastname}</StyledText>
         <StyledTextInput
         placeholder="Apellido"
-        value={data.lastname}
-        onChangeText={(text) => handleChange('lastname', text)}
+        value={formik.values.lastname}
+        onChangeText={handleChangeLastname}
       />
-        <StyledTextInput
+      <StyledText>{formik.errors.phone_number}</StyledText>
+      <StyledTextInput
         placeholder="Numero de telefono"
-        value={data.phone_number}
-        onChangeText={(text) => handleChange('phone_number', text)}
+        value={formik.values.phone_number}
+        onChangeText={handleChangePhone}
       />
+      <StyledText>{formik.errors.email}</StyledText>
       <StyledTextInput
         placeholder="Correo electrónico"
         keyboardType="email-address"
-        value={data.email}
-        onChangeText={(text) => handleChange('email', text)}
+        value={formik.values.email}
+        onChangeText={handleChangeEmail}
       />
+      <StyledText>{formik.errors.password}</StyledText>
       <StyledTextInput
         placeholder="Contraseña"
         secureTextEntry
-        value={data.password}
-        onChangeText={(text) => handleChange('password', text)}
+        value={formik.values.password}
+        onChangeText={handleChangePassword}
       />
-      <StyledButton 
-      onPress={onSaveUser}
-      >
-        <ButtonText>Registrar</ButtonText>
-      </StyledButton>
-      <StyledLink onPress={() => console.log('Ir a Términos y Condiciones')}>
+      <StyledButton
+        title="Registrar"
+        onPress={() => formik.handleSubmit()}
+      />
+      <StyledLink>
         <LinkText>Leer Términos y Condiciones</LinkText>
       </StyledLink>
     </Container>
+   }
+  </>
   );
 };
+
+const StyledText = styled.Text`
+  font-size: 13px;
+  color: red;
+  `
 
 const Container = styled.View`
   flex: 1;
@@ -105,10 +144,10 @@ const StyledTextInput = styled.TextInput`
   padding-horizontal: 15px;
 `;
 
-const StyledButton = styled(TouchableOpacity)`
+const StyledButton = styled(Button)`
   background-color: #3498db;
   height: 50px;
-  border-radius: 8px;
+  border-radius: 50px;
   align-items: center;
   justify-content: center;
   margin-top: 10px;
@@ -132,6 +171,7 @@ const LinkText = styled.Text`
 
 const mapStateToProps = (state: any) => ({
     login: state.user.login,
+    isLoading: state.loader.isLoading
 })
 
 const mapDispatchToProps = (dispatch: any) => ({

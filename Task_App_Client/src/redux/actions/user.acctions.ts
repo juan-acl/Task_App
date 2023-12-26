@@ -36,9 +36,10 @@ export const RegisterUser = (name: string, email: string, password: string, last
         await axios.post(process.env.API + 'user/register', insertUser)
     }catch(error){
         console.log('Error al registrarse', error)
-        dispatch(showLoader(false))
     }finally{
-        dispatch(showLoader(false))
+        setTimeout(() => {
+            dispatch(showLoader(false))
+        }, 2000)
     }
 }
 

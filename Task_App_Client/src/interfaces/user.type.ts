@@ -27,6 +27,7 @@ export interface UserState {
 export interface UserProps {
     _register: (name: string, email: string, password: string, lastname: string, phone_number: string) => void;
     _showLoader: (show: boolean) => void;
+    isLoading: boolean;
 }
 
 /* Types mapStateToProps */
