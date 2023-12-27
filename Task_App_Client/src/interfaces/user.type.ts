@@ -30,6 +30,12 @@ export interface UserProps {
     isLoading: boolean;
 }
 
+export interface UserLoginProps {
+    isLoading: boolean;
+    _login: (password: string, email: string) => {success: boolean, message: string};
+    _showLoader: (show: boolean) => void;
+}
+
 /* Types mapStateToProps */
 export interface State {
     user: {

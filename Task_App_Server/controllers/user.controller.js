@@ -56,10 +56,11 @@ module.exports.login = (req, res) => {
         });
       }
       if (data.length === 0) {
-        res.statusCode = 400;
-        return res.status(400).send({
-          code: 400,
-          ErrorMessage: "Email or password incorrect",
+        res.statusCode = 200;
+        return res.status(200).send({
+          code: 200,
+          user: data,
+          message: "Email or password incorrect",
         });
       }
       return res

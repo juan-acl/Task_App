@@ -11,15 +11,31 @@ export const USER_SET_LOGIN = 'USER:USER:SET:LOGIN';
 export const Login = (password: string, email: string) => async (dispatch: Dispatch ) => {
     try{
         dispatch(showLoader(true))
-        const request = await axios.post(process.env.API + 'user/login', { email: email, password: password })
-        const response = request.data.user
-        dispatch(setProfile(response))
-        dispatch(setLogin(true))
+        const request = await axios.post(process.env.API + 'user/login', { password: password, email: email })
+        if(request.data.user.length === 0){
+            return {
+                message: 'Usuario o contraseña incorrectos',
+                success: false
+            }
+        }else{
+            const response = request.data.user
+            dispatch(setProfile(response))
+            dispatch(setLogin(true))
+            return {
+                message: 'Bienvenido ' + response[0].name,
+                success: true
+            }
+        }
     }catch(error){
-        dispatch(showLoader(false))
         console.log('Error al loguearse', error)
+        return {
+            message: 'Error al loguearse',
+            success: false
+        }
     }finally{
+        setTimeout(() => {
         dispatch(showLoader(false))
+        }, 2000)
     }
 }
 

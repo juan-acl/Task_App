@@ -107,6 +107,7 @@ return (
       />
       <StyledButton
         title="Registrar"
+        disabled={formik.errors.email || formik.errors.password || formik.errors.lastname || formik.errors.name || formik.errors.phone_number ? true : false}
         onPress={() => formik.handleSubmit()}
       />
       <StyledLink>
