@@ -11,7 +11,13 @@ const CreateDrawerNavigation = createDrawerNavigator();
 
 const NavigationDrawer = (props: any) => {
     return(
-        <CreateDrawerNavigation.Navigator>
+        <CreateDrawerNavigation.Navigator
+                    screenOptions={{
+          headerStyle: {
+            backgroundColor: 'transparent',
+          },
+        }}
+        >
             <CreateDrawerNavigation.Screen 
                 name='HomeScreen' 
                 component={HomeScreen} 
@@ -41,7 +47,7 @@ const NavigationDrawer = (props: any) => {
                     name='Register_Screen'
                     component={RegisterScreen}
                     options={
-                        { title: 'Crear cuenta'}
+                        { title: 'Crear cuenta',}
                     }
                 />
              }
