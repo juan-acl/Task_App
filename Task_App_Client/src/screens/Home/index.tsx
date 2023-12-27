@@ -1,14 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { Text } from 'react-native'
+import Dashboard from '../../components/Dashboard'
 
-const Home = () => {
+const HomeScreen = () => {
     return (
-        <>
-            <Text>
-                HomeScreen
-            </Text>
-        </>
+        <Dashboard />
     )
 }
 
-export default Home
+export default HomeScreen

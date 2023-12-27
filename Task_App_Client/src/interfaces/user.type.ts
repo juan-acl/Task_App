@@ -43,4 +43,10 @@ export interface State {
     }
 }
 
+export interface LogOutProps {
+    profile: [];
+    _logout: () => void;
+    isLoading: boolean;
+}
+
 

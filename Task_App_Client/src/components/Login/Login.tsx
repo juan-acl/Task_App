@@ -11,7 +11,9 @@ import { UserLoginProps } from '../../interfaces/user.type';
 import * as Yup from 'yup';
 
 const LoginComponent: React.FC<UserLoginProps> = (props: UserLoginProps) => {
-    const navigate = useNavigation()
+
+    const navigate = useNavigation();
+    
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -34,12 +36,10 @@ const LoginComponent: React.FC<UserLoginProps> = (props: UserLoginProps) => {
             }finally{
                 setTimeout(() => {
                     if(success) {
-                    formik.resetForm()
-                    navigate.navigate('HomeScreen' as never)
-                    alert(msg)
-                    }else{
-                        alert(msg)
+                        formik.resetForm()
+                        navigate.navigate('HomeScreen' as never)
                     }
+                    alert(msg)
                 }, 2000)
             }
         }
@@ -92,6 +92,7 @@ const Container = styled.View`
   flex: 1;
   justify-content: center;
   padding-horizontal: 20px;
+  margin-top:-80px
 `;
 
 const Title = styled.Text`

@@ -34,7 +34,7 @@ export const Login = (password: string, email: string) => async (dispatch: Dispa
         }
     }finally{
         setTimeout(() => {
-        dispatch(showLoader(false))
+            dispatch(showLoader(false))
         }, 2000)
     }
 }
@@ -54,6 +54,19 @@ export const RegisterUser = (name: string, email: string, password: string, last
         console.log('Error al registrarse', error)
     }finally{
         setTimeout(() => {
+            dispatch(showLoader(false))
+        }, 2000)
+    }
+}
+
+export const LogOut = () => async (dispatch:Dispatch) => {
+    try{
+        dispatch(showLoader(true))
+    }catch(error) {
+        console.log('Error al cerrar la sesion', error)
+    }finally{
+        setTimeout(() => {
+            dispatch(setLogin(false))
             dispatch(showLoader(false))
         }, 2000)
     }
