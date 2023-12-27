@@ -128,6 +128,7 @@ const Container = styled.View`
   flex: 1;
   justify-content: center;
   padding-horizontal: 20px;
+  margin-top:-80px
 `;
 
 const Title = styled.Text`
@@ -152,12 +153,6 @@ const StyledButton = styled(Button)`
   align-items: center;
   justify-content: center;
   margin-top: 10px;
-`;
-
-const ButtonText = styled.Text`
-  color: #fff;
-  font-size: 18px;
-  font-weight: bold;
 `;
 
 const StyledLink = styled(TouchableOpacity)`
