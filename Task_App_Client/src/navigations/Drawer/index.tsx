@@ -11,18 +11,12 @@ const CreateDrawerNavigation = createDrawerNavigator();
 
 const NavigationDrawer = (props: any) => {
     return(
-        <CreateDrawerNavigation.Navigator
-                    screenOptions={{
-          headerStyle: {
-            backgroundColor: 'transparent',
-          },
-        }}
-        >
+        <CreateDrawerNavigation.Navigator>
             <CreateDrawerNavigation.Screen 
                 name='HomeScreen' 
                 component={HomeScreen} 
                 options={
-                    { title: props.login ? 'Dashboard' : 'Pagina de inicio'}
+                    { title: props.login ? 'Dashboard' : 'Pagina de inicio',  headerTitle: ''}
                 }
             />
             { props.login ? null : 
@@ -30,7 +24,7 @@ const NavigationDrawer = (props: any) => {
                     name='LogIn_Screen'
                     component={LoginScreen}
                     options={
-                        { title: 'Iniciar sesion'}
+                        { title: 'Iniciar sesion', headerTransparent: true, headerTitle: ''}
                     }
                 />
             }
@@ -39,7 +33,7 @@ const NavigationDrawer = (props: any) => {
                     name='Profile_Screen'
                     component={Profile}
                     options={
-                        { title: 'Perfil' }
+                        { title: 'Perfil', headerTransparent: true, headerTitle: '' }
                     }
                 />
              : 
@@ -47,7 +41,7 @@ const NavigationDrawer = (props: any) => {
                     name='Register_Screen'
                     component={RegisterScreen}
                     options={
-                        { title: 'Crear cuenta',}
+                        { title: 'Crear cuenta', headerTransparent: true, headerTitle: ''}
                     }
                 />
              }

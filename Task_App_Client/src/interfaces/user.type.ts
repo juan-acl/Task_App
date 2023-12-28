@@ -44,7 +44,7 @@ export interface State {
 }
 
 export interface LogOutProps {
-    profile: [];
+    profile: [{name: string, lastname: string, phone_number: string, email:string, password: string}];
     _logout: () => void;
     isLoading: boolean;
 }
