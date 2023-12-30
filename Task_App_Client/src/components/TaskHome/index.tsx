@@ -1,7 +1,9 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React, { useState } from 'react';
+import { Button, Text } from 'react-native';
 import { connect } from "react-redux";
 import Alert from '../Alert';
+import { showAlert } from '../../redux/actions/alert.action';
+
 
 const TaskHome: React.FC = (props:any) => {
 
@@ -11,7 +13,7 @@ const TaskHome: React.FC = (props:any) => {
 }
 
 const mapStateToProps = (state: any) => ({
-    // isShow: state.alert.isShow,
+    isShow: state.alert.isShow,
     // message: state.alert.message,
     // type: state.alert.type,
     // callback: state.alert.callback,
@@ -19,7 +21,7 @@ const mapStateToProps = (state: any) => ({
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-    // _hideAlert: () => dispatch(Actions.hideAlert())
+    _showAlert: (title: string, message: string ,isShow: boolean) => dispatch(showAlert(title, message, isShow))
 })
 
-export default connect(mapStateToProps, null) (TaskHome);
+export default connect(mapStateToProps, mapDispatchToProps) (TaskHome);

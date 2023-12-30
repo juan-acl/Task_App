@@ -8,8 +8,6 @@ import Loader from '../Loader';
 
 const ProfileComponent: React.FC<LogOutProps> = (props: LogOutProps) => {
 
-console.log('Validando las props del perfil', JSON.stringify(props, null, 2))
-
   return (
     <Container>
       {props.isLoading ? (
@@ -21,7 +19,6 @@ console.log('Validando las props del perfil', JSON.stringify(props, null, 2))
           <ProfileValue>{props.profile[0].name}</ProfileValue>
           <ProfileLabel>Correo Electrónico:</ProfileLabel>
           <ProfileValue>{props.profile[0].email}</ProfileValue>
-          {/* Agrega más campos según sea necesario */}
           <ButtonContainer>
             <LogoutButton onPress={() => props._logout()}>
               <ButtonText>Cerrar sesión</ButtonText>

@@ -34,6 +34,7 @@ export interface UserLoginProps {
     isLoading: boolean;
     _login: (password: string, email: string) => {success: boolean, message: string};
     _showLoader: (show: boolean) => void;
+    _showAlert: (title: string, message: string, isShow: boolean) => void;
 }
 
 /* Types mapStateToProps */

@@ -8,6 +8,7 @@ import { Login } from '../../redux/actions/user.acctions';
 import { showLoader } from '../../redux/actions/loader.action';
 import { useFormik } from 'formik';
 import { UserLoginProps } from '../../interfaces/user.type';
+import { showAlert } from '../../redux/actions/alert.action';
 import * as Yup from 'yup';
 
 const LoginComponent: React.FC<UserLoginProps> = (props: UserLoginProps) => {
@@ -34,12 +35,12 @@ const LoginComponent: React.FC<UserLoginProps> = (props: UserLoginProps) => {
             }catch(error) {
                 console.log('Error en el login', error)
             }finally{
+                props._showAlert('Sesion iniciada', msg, true)
                 setTimeout(() => {
                     if(success) {
                         formik.resetForm()
                         navigate.navigate('HomeScreen' as never)
                     }
-                    alert(msg)
                 }, 2000)
             }
         }
@@ -127,6 +128,7 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
     _login: (password: string, email: string) => dispatch(Login(password, email)),
     _showLoader: (show: boolean) => dispatch(showLoader(show)),
+    _showAlert: (title: string, message: string ,isShow: boolean) => dispatch(showAlert(title, message, isShow))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps) (LoginComponent)
