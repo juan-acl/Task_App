@@ -16,7 +16,7 @@ const NavigationDrawer = (props: any) => {
                 name='HomeScreen' 
                 component={HomeScreen} 
                 options={
-                    { title: props.login ? 'Dashboard' : 'Pagina de inicio',  headerTitle: ''}
+                    { title: props.login ? 'Dashboard' : 'Pagina de inicio', headerTransparent: true,  headerTitle: ''}
                 }
             />
             { props.login ? null : 
