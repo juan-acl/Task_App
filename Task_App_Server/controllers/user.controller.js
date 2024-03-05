@@ -45,32 +45,29 @@ module.exports.login = (req, res) => {
     email: email,
     password: password,
   };
-  if (email !== undefined && password !== undefined) {
-    databaseFuntions.login(credential, (error, data) => {
-      if (error) {
-        res.statusCode = 500;
-        return res.status(500).send({
-          code: 500,
-          ErrorMessage: "Internal server error",
-          error: error,
-        });
-      }
-      if (data.length === 0) {
-        res.statusCode = 200;
-        return res.status(200).send({
-          code: 200,
-          user: data,
-          message: "Email or password incorrect",
-        });
-      }
-      return res
-        .status(200)
-        .send({ code: 200, message: "Success", user: data });
-    });
-  } else {
+  if (!email || !password) {
     res.statusCode = 400;
     return res
       .status(400)
       .send({ code: 400, message: "All the fields are required!" });
   }
+  databaseFuntions.login(credential, (error, data) => {
+    if (error) {
+      res.statusCode = 500;
+      return res.status(500).send({
+        code: 500,
+        ErrorMessage: "Internal server error",
+        error: error,
+      });
+    }
+    if (data.length === 0) {
+      res.statusCode = 200;
+      return res.status(200).send({
+        code: 200,
+        user: data,
+        message: "Email or password incorrect",
+      });
+    }
+    return res.status(200).send({ code: 200, message: "Success", user: data });
+  });
 };

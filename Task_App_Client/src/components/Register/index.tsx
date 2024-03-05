@@ -28,7 +28,7 @@ const Register: React.FC<UserProps> = (props: UserProps) => {
         lastname: Yup.string().required('El apellido es requerido!'),
         phone_number: Yup.string().required('El numero de telefono es requerido!'),
         email: Yup.string().required('El correo es requerido!'),
-        password: Yup.string().required('El contraseña es requerido!'),
+        password: Yup.string().required('La contraseña es requerida!'),
 
       }),
       validateOnChange: true,
@@ -43,7 +43,6 @@ const Register: React.FC<UserProps> = (props: UserProps) => {
             formik.resetForm()
             navigate.navigate('LogIn_Screen' as never)
           }, 2000)
-          console.log('Se registro correctamente el usuario')
         }
       }
     });

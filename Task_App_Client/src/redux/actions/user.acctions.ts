@@ -1,48 +1,45 @@
 import { Dispatch } from "redux";
 import { Profile } from "../../interfaces/user.type";
 import { showLoader } from './loader.action';
+import { showAlert } from "./alert.action";
 import axios from 'axios';
 
 export const USER_SET_PROFILE = 'USER:USER:SET:PROFILE';
-export const USER_SET_DEFAULT= 'USER:USER:SET:DEFAULT';
+export const USER_SET_DEFAULT = 'USER:USER:SET:DEFAULT';
 export const USER_SET_EDIT = 'USER:USER:SET:EDIT';
 export const USER_SET_LOGIN = 'USER:USER:SET:LOGIN';
 
-export const Login = (password: string, email: string) => async (dispatch: Dispatch ) => {
-    try{
-        dispatch(showLoader(true))
-        const request = await axios.post(process.env.API + 'user/login', { password: password, email: email })
-        if(request.data.user.length === 0){
-            return {
-                message: 'Usuario o contraseña incorrectos',
-                success: false
-            }
-        }else{
-            const response = request.data.user
-            dispatch(setProfile(response))
-            dispatch(setLogin(true))
-            return {
-                message: 'Bienvenido ' + response[0].name,
-                success: true
-            }
+export const Login = (password: string, email: string) => async (dispatch: Dispatch) => {
+    dispatch(showLoader(true));
+    try {
+        let isLogin = false
+        const response_user = await axios.post(process.env.API + 'user/login', { password, email });
+        if (response_user.data.user.length === 0) {
+            setTimeout(() => {
+                dispatch(showLoader(false));
+            }, 2000);
+            isLogin = false
+        } else {
+            setTimeout(() => {
+                dispatch(setLogin(true));
+                dispatch(setProfile(response_user.data.user));
+                dispatch(showLoader(false));
+            }, 2000);
+            isLogin = true
         }
-    }catch(error){
-        console.log('Error al loguearse', error)
-        return {
-            message: 'Error al loguearse',
-            success: false
-        }
-    }finally{
-        setTimeout(() => {
-            dispatch(showLoader(false))
-        }, 2000)
+        return isLogin
+    } catch (error) {
+        console.error('Error during login:', error);
+        dispatch(showLoader(false));
+        return false
     }
-}
+};
 
-export const RegisterUser = (name: string, email: string, password: string, lastname: string, phone_number: string) => async (dispatch:Dispatch) => {
-    try{
+
+export const RegisterUser = (name: string, email: string, password: string, lastname: string, phone_number: string) => async (dispatch: Dispatch) => {
+    try {
         dispatch(showLoader(true))
-        let insertUser ={
+        let insertUser = {
             name: name,
             email: email,
             password: password,
@@ -50,21 +47,21 @@ export const RegisterUser = (name: string, email: string, password: string, last
             phone_number: phone_number
         }
         await axios.post(process.env.API + 'user/register', insertUser)
-    }catch(error){
+    } catch (error) {
         console.log('Error al registrarse', error)
-    }finally{
+    } finally {
         setTimeout(() => {
             dispatch(showLoader(false))
         }, 2000)
     }
 }
 
-export const LogOut = () => async (dispatch:Dispatch) => {
-    try{
+export const LogOut = () => async (dispatch: Dispatch) => {
+    try {
         dispatch(showLoader(true))
-    }catch(error) {
+    } catch (error) {
         console.log('Error al cerrar la sesion', error)
-    }finally{
+    } finally {
         setTimeout(() => {
             dispatch(setLogin(false))
             dispatch(showLoader(false))
@@ -77,7 +74,7 @@ export const setLogin = (login: boolean) => ({
     login
 })
 
-export const setProfile = (profile:Profile) => ({
+export const setProfile = (profile: Profile) => ({
     type: USER_SET_PROFILE,
     profile
 })
@@ -87,7 +84,7 @@ export const setDefault = (user: number) => ({
     user
 })
 
-export const setEdit = (profile:Profile) => ({
+export const setEdit = (profile: Profile) => ({
     type: USER_SET_EDIT,
     profile
 })

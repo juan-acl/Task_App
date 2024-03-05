@@ -8,8 +8,8 @@ const initialState: InitialState = {
 }
 
 export default (state = initialState, action: AlertAction) => {
-    switch(action.type) {
-        case Actions.SHOW_ALERT:
+    switch (action.type) {
+        case Actions.SHOWS:
             return {
                 ...state,
                 isShow: action.isShow,

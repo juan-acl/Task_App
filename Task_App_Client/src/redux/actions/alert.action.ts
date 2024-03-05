@@ -1,7 +1,7 @@
-export const SHOW_ALERT = 'ALERT:SHOW';
+export const SHOWS = 'ALERT:SHOW';
 
-export const showAlert = (title: string, message: string, isShow: boolean ) => ({
-    type: SHOW_ALERT,
+export const showAlert = (title: string, message: string, isShow: boolean) => ({
+    type: SHOWS,
     title,
     message,
     isShow

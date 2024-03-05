@@ -1,5 +1,5 @@
 /* User types user.action */
-export interface Profile  {
+export interface Profile {
     user_id: number,
     name: string,
     lastname: string,
@@ -31,8 +31,9 @@ export interface UserProps {
 }
 
 export interface UserLoginProps {
+    isShow: boolean;
     isLoading: boolean;
-    _login: (password: string, email: string) => {success: boolean, message: string};
+    _login: (password: string, email: string) => { success: boolean, message: string };
     _showLoader: (show: boolean) => void;
     _showAlert: (title: string, message: string, isShow: boolean) => void;
 }
@@ -45,7 +46,7 @@ export interface State {
 }
 
 export interface LogOutProps {
-    profile: [{name: string, lastname: string, phone_number: string, email:string, password: string}];
+    profile: [{ name: string, lastname: string, phone_number: string, email: string, password: string }];
     _logout: () => void;
     isLoading: boolean;
 }

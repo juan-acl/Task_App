@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from "react-redux";
-import { Button } from 'react-native';
 import styled from 'styled-components/native';
+import { Button } from 'native-base';
 import Loader from '../Loader';
-import { useNavigation } from '@react-navigation/native';
 import { Login } from '../../redux/actions/user.acctions';
 import { showLoader } from '../../redux/actions/loader.action';
 import { useFormik } from 'formik';
 import { UserLoginProps } from '../../interfaces/user.type';
 import { showAlert } from '../../redux/actions/alert.action';
 import * as Yup from 'yup';
+import AlertLogin from '../Alert/Alert';
 
 const LoginComponent: React.FC<UserLoginProps> = (props: UserLoginProps) => {
+    const [showAlert, setShowAlert] = useState({
+        isShow: false,
+        message: '',
+        title: ''
+    });
 
-    const navigate = useNavigation();
-    
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -24,25 +27,11 @@ const LoginComponent: React.FC<UserLoginProps> = (props: UserLoginProps) => {
             email: Yup.string().required('El correo es requerido!'),
             password: Yup.string().required('La contraseña es requerida!')
         }),
-        onSubmit: async(values) => {
+        onSubmit: async (values) => {
             const { email, password } = values
-            let success = false
-            let msg = ''
-            try{
-                const response = await props._login(password, email)
-                success = response.success
-                msg = response.message
-            }catch(error) {
-                console.log('Error en el login', error)
-            }finally{
-                props._showAlert('Sesion iniciada', msg, true)
-                setTimeout(() => {
-                    if(success) {
-                        formik.resetForm()
-                        navigate.navigate('HomeScreen' as never)
-                    }
-                }, 2000)
-            }
+            let response = await props._login(password, email)
+            if (response) return setShowAlert({ isShow: true, message: '¡Bienvenido!', title: 'Sesion Iniciada' })
+            setShowAlert({ isShow: true, message: 'Usuario o contraseña incorrectos', title: 'Error' })
         }
     })
 
@@ -56,30 +45,32 @@ const LoginComponent: React.FC<UserLoginProps> = (props: UserLoginProps) => {
 
     return (
         <>
-        {props.isLoading ? 
-            <Loader /> : 
-        <Container>
-            <Title>Iniciar Sesi&oacute;n</Title>
-                <StyledText>{formik.errors.email}</StyledText>
-            <StyledTextInput
-                placeholder="Correo electronico"
-                value={formik.values.email}
-                keyboardType="email-address"
-                onChangeText={handleChangeEmail}
-                />
-                <StyledText>{formik.errors.password}</StyledText>
-            <StyledTextInput
-                placeholder="Contraseña"
-                secureTextEntry
-                value={formik.values.password}
-                onChangeText={handleChangePassword}
-                />
-            <StyledButton
-                disabled={formik.errors.email || formik.errors.password ? true : false}
-                title="Iniciar sesi&oacute;n"
-                onPress={() => formik.handleSubmit()}
-            />
-        </Container>}
+            {props.isLoading ?
+                <Loader /> :
+                <Container>
+                    <Title>Iniciar Sesi&oacute;n</Title>
+                    <StyledText>{formik.errors.email}</StyledText>
+                    <StyledTextInput
+                        placeholder="Correo electronico"
+                        value={formik.values.email}
+                        keyboardType="email-address"
+                        onChangeText={handleChangeEmail}
+                    />
+                    <StyledText>{formik.errors.password}</StyledText>
+                    <StyledTextInput
+                        placeholder="Contraseña"
+                        secureTextEntry
+                        value={formik.values.password}
+                        onChangeText={handleChangePassword}
+                    />
+                    <AlertLogin
+                        isShow={showAlert.isShow}
+                        title={showAlert.title}
+                        message={showAlert.message}
+                        onClick={formik.handleSubmit}
+                        disabled={formik.errors.email || formik.errors.password ? true : false}
+                    />
+                </Container>}
         </>
     )
 }
@@ -93,7 +84,7 @@ const Container = styled.View`
   flex: 1;
   justify-content: center;
   padding-horizontal: 20px;
-  margin-top:-80px
+  margin-top: 50%;
 `;
 
 const Title = styled.Text`
@@ -122,13 +113,14 @@ const StyledButton = styled(Button)`
 `;
 
 const mapStateToProps = (state: any) => ({
-    isLoading: state.loader.isLoading
+    isLoading: state.loader.isLoading,
+    isShow: state.alert.isShow,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
     _login: (password: string, email: string) => dispatch(Login(password, email)),
     _showLoader: (show: boolean) => dispatch(showLoader(show)),
-    _showAlert: (title: string, message: string ,isShow: boolean) => dispatch(showAlert(title, message, isShow))
+    _showAlert: (title: string, message: string, isShow: boolean) => dispatch(showAlert(title, message, isShow))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps) (LoginComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent)

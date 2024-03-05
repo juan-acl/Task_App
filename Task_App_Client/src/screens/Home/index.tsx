@@ -1,5 +1,4 @@
 import React from 'react'
-import { Text } from 'react-native'
 import Dashboard from '../../components/Dashboard'
 
 const HomeScreen = () => {
@@ -8,4 +7,4 @@ const HomeScreen = () => {
     )
 }
 
-export default HomeScreen
+export default HomeScreen;

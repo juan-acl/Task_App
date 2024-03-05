@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Text } from 'react-native';
 import { connect } from "react-redux";
-import Alert from '../Alert';
 import { showAlert } from '../../redux/actions/alert.action';
 
 
 const TaskHome: React.FC = (props:any) => {
 
     return (
-        <Alert />
+        <></>
     )
 }
 

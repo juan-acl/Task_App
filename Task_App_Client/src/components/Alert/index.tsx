@@ -1,46 +1,70 @@
-import React from 'react';
-import { View } from 'react-native';
-import { showAlert } from '../../redux/actions/alert.action';
+import React from "react";
+import { View } from "react-native";
 import { connect } from "react-redux";
-import { AlertProps, AlertStateToProps } from '../../interfaces/alert.type';
-import AwesomeAlert from 'react-native-awesome-alerts';
+import { Alert, VStack, HStack, IconButton, CloseIcon, Box, Text, Center, NativeBaseProvider } from "native-base";
 
-const AlertComponent: React.FC<AlertProps> = (props:AlertProps) => {
+import AlertComponent from "./Alert";
+
+interface AlertState {
+  alert: {
+    isShow: boolean
+    title: string
+    message: string
+  }
+}
+
+interface AlertProps {
+  isShow: boolean
+  title: string
+  message: string
+}
+
+const AlertLogin = (props: AlertProps) => {
   return (
-    <View
-    >
-  {props.isShow && (
-            <AwesomeAlert
-          show={props.isShow}
-          showProgress={false}
-          title={props.title}
-          message={props.message}
-          closeOnTouchOutside={true}
-          closeOnHardwareBackPress={false}
-          showConfirmButton={true}
-          confirmText="Ok"
-          confirmButtonColor="#DD6B55"
-          onConfirmPressed={() => {
-            props._showAlert('', '', false)
-          }}
-          contentContainerStyle={{ width: '80%', height: 'auto' }}  // Ajusta el ancho y alto según tus necesidades
-          titleStyle={{ fontSize: 25 }}  // Puedes ajustar el tamaño del título
-          messageStyle={{ fontSize: 20 }}  // Puedes ajustar el tamaño del mensaje
-          confirmButtonTextStyle={{ fontSize: 20 }}  // Puedes ajustar el tamaño del texto del botón de confirmación
-        />
-  )}
+    <View>
+      {props.isShow && (
+        <NativeBaseProvider>
+          <Center flex={1} px="3">
+            <Box w="100%" alignItems="center">
+              <Alert maxW="400" status={props.title === "Sesion Iniciada" ? "success" : "error"}>
+                <VStack space={1} flexShrink={1} w="100%">
+                  <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
+                    <HStack flexShrink={1} space={2} alignItems="center">
+                      <Alert.Icon />
+                      <Text fontSize="md" fontWeight="medium" _dark={{
+                        color: "coolGray.800"
+                      }}>
+                        {props.title}
+                      </Text>
+                    </HStack>
+                    <IconButton variant="unstyled" _focus={{
+                      borderWidth: 0
+                    }} icon={<CloseIcon size="3" />} _icon={{
+                      color: "coolGray.600"
+                    }} />
+                  </HStack>
+                  <Box pl="6" _dark={{
+                    _text: {
+                      color: "coolGray.600"
+                    }
+                  }}>
+                    {props.message}
+                  </Box>
+                </VStack>
+              </Alert>
+            </Box>
+          </Center>
+        </NativeBaseProvider>
+      )}
     </View>
   )
 }
 
-const mapStateToProps = (state: AlertStateToProps) => ({
-    isShow: state.alert.isShow,
-    message: state.alert.message,
-    title: state.alert.title
+
+const mapStateToProps = (state: AlertState) => ({
+  isShow: state.alert.isShow,
+  title: state.alert.title,
+  message: state.alert.message
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
-    _showAlert: (title: string, message: string ,isShow: boolean) => dispatch(showAlert(title, message, isShow))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(AlertComponent as React.FC);
+export default connect(mapStateToProps)(AlertLogin);
