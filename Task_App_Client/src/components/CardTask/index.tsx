@@ -9,14 +9,10 @@ import {
     SafeAreaView,
 } from 'react-native';
 import { connect } from "react-redux";
-import { getTaskByUser } from '../../redux/actions/task.action';
+import { getTaskByUser, deleteTask, addTask } from '../../redux/actions/task.action';
 import _ from 'lodash';
-import { Timespan } from 'react-native/Libraries/Utilities/IPerformanceLogger';
-
-interface Task {
-    id: number,
-    title: string
-}
+import { MaterialIcons } from '@expo/vector-icons';
+import Loader from '../Loader';
 
 interface TaskUser {
     task_id: number,
@@ -28,11 +24,17 @@ interface StateToProps {
     user: {
         profile: [{ name: string, lastname: string, phone_number: string, email: string, password: string, user_id: number }];
     }
+    loader: {
+        isLoading: boolean
+    }
 }
 
 interface Props {
     profile: [{ name: string, lastname: string, phone_number: string, email: string, password: string, user_id: number }];
     _getTaskByUser: (id: number) => TaskUser[]
+    _deleteTask: (id: number) => void
+    isLoading: boolean
+    _addTask: (description: string, user: number) => void
 }
 
 const CardTask: React.FC<Props> = (props: Props) => {
@@ -40,27 +42,34 @@ const CardTask: React.FC<Props> = (props: Props) => {
     const [task, setTask] = useState('');
     const [taskUser, setTaskUser] = useState<TaskUser[]>([]);
 
-    const handleAddTask = () => {
+    const handleAddTask = async () => {
         if (task.trim() !== '') {
-            // setTaskList([...taskList, { id: Date.now(), title: task }]);
+            await props._addTask(task, props.profile[0].user_id)
+            getTasksByUser()
             setTask('');
         }
     };
 
+    const handleDeleteTask = async (id: number) => {
+        await props._deleteTask(id)
+        getTasksByUser()
+    }
+
     const renderTask = ({ item }: { item: TaskUser }) => {
-        console.log("Estamos valirandaod", { item })
         return (
             <TouchableOpacity
                 style={styles.taskItem}
                 onPress={() => { }}>
                 <Text>{item.description}</Text>
+                <TouchableOpacity style={styles.delete} onPress={() => handleDeleteTask(item.task_id)}>
+                    <MaterialIcons name="delete" size={24} color="red" />
+                </TouchableOpacity>
             </TouchableOpacity>
         );
     }
 
     const getTasksByUser = async () => {
         let response = await props._getTaskByUser(props.profile[0].user_id)
-        console.log("Estamos validando", response)
         setTaskUser(response)
     }
 
@@ -70,27 +79,35 @@ const CardTask: React.FC<Props> = (props: Props) => {
     }, [props.profile])
 
     return (
-        <SafeAreaView style={styles.container}>
-            <TextInput
-                style={styles.input}
-                value={task}
-                onChangeText={text => setTask(text)}
-                placeholder="Add a task"
-            />
-            <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
-                <Text style={styles.buttonText}>Add Task</Text>
-            </TouchableOpacity>
-            <FlatList
-                data={taskUser}
-                renderItem={renderTask}
-                //keyExtractor={item => item.id.toString()}
-                style={styles.taskList}
-            />
-        </SafeAreaView>
+        <>
+            {props.isLoading ? <Loader /> : <SafeAreaView style={styles.container}>
+                <TextInput
+                    style={styles.input}
+                    value={task}
+                    onChangeText={text => setTask(text)}
+                    placeholder="Add a task"
+                />
+                <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
+                    <Text style={styles.buttonText}>Add Task</Text>
+                </TouchableOpacity>
+                <FlatList
+                    data={taskUser}
+                    renderItem={renderTask}
+                    keyExtractor={item => item.task_id.toString()}
+                    style={styles.taskList}
+                />
+            </SafeAreaView>
+            }
+        </>
     );
 };
 
 const styles = StyleSheet.create({
+    delete: {
+        position: 'absolute',
+        right: 10,
+        top: 10,
+    },
     container: {
         flex: 1,
         padding: 20,
@@ -135,10 +152,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: StateToProps) => ({
     profile: state.user.profile,
+    isLoading: state.loader.isLoading
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-    _getTaskByUser: (id: number) => dispatch(getTaskByUser(id))
+    _getTaskByUser: (id: number) => dispatch(getTaskByUser(id)),
+    _deleteTask: (id: number) => dispatch(deleteTask(id)),
+    _addTask: (description: string, user: number) => dispatch(addTask(description, user))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardTask as never);
