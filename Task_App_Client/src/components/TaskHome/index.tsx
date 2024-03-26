@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Button, Text } from 'react-native';
 import { connect } from "react-redux";
 import { showAlert } from '../../redux/actions/alert.action';
+import CardTask from '../CardTask';
 
 
-const TaskHome: React.FC = (props:any) => {
+const TaskHome: React.FC = (props: any) => {
 
     return (
-        <></>
+        <>
+            <CardTask />
+        </>
     )
 }
 
@@ -20,7 +23,7 @@ const mapStateToProps = (state: any) => ({
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-    _showAlert: (title: string, message: string ,isShow: boolean) => dispatch(showAlert(title, message, isShow))
+    _showAlert: (title: string, message: string, isShow: boolean) => dispatch(showAlert(title, message, isShow))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps) (TaskHome);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskHome);

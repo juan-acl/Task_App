@@ -3,8 +3,6 @@ import { View } from "react-native";
 import { connect } from "react-redux";
 import { Alert, VStack, HStack, IconButton, CloseIcon, Box, Text, Center, NativeBaseProvider } from "native-base";
 
-import AlertComponent from "./Alert";
-
 interface AlertState {
   alert: {
     isShow: boolean

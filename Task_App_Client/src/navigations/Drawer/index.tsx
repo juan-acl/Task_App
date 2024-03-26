@@ -10,25 +10,25 @@ import Profile from '../../screens/Profile';
 const CreateDrawerNavigation = createDrawerNavigator();
 
 const NavigationDrawer = (props: any) => {
-    return(
+    return (
         <CreateDrawerNavigation.Navigator>
-            <CreateDrawerNavigation.Screen 
-                name='HomeScreen' 
-                component={HomeScreen} 
+            <CreateDrawerNavigation.Screen
+                name='HomeScreen'
+                component={HomeScreen}
                 options={
-                    { title: props.login ? 'Dashboard' : 'Pagina de inicio', headerTransparent: true,  headerTitle: ''}
+                    { title: props.login ? 'Dashboard' : 'Pagina de inicio', headerTransparent: true, headerTitle: '' }
                 }
             />
-            { props.login ? null : 
+            {props.login ? null :
                 <CreateDrawerNavigation.Screen
                     name='LogIn_Screen'
                     component={LoginScreen}
                     options={
-                        { title: 'Iniciar sesion', headerTransparent: true, headerTitle: ''}
+                        { title: 'Iniciar sesion', headerTransparent: true, headerTitle: '' }
                     }
                 />
             }
-            { props.login ? 
+            {props.login ?
                 <CreateDrawerNavigation.Screen
                     name='Profile_Screen'
                     component={Profile}
@@ -36,15 +36,15 @@ const NavigationDrawer = (props: any) => {
                         { title: 'Perfil', headerTransparent: true, headerTitle: '' }
                     }
                 />
-             : 
+                :
                 <CreateDrawerNavigation.Screen
                     name='Register_Screen'
                     component={RegisterScreen}
                     options={
-                        { title: 'Crear cuenta', headerTransparent: true, headerTitle: ''}
+                        { title: 'Crear cuenta', headerTransparent: true, headerTitle: '' }
                     }
                 />
-             }
+            }
         </CreateDrawerNavigation.Navigator>
     )
 }
@@ -53,4 +53,4 @@ const mapStateToProps = (state: MapStateProps) => ({
     login: state.user.login
 })
 
-export default connect(mapStateToProps, null) (NavigationDrawer);
+export default connect(mapStateToProps)(NavigationDrawer);
