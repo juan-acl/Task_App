@@ -13,6 +13,7 @@ import { getTaskByUser, deleteTask, addTask } from '../../redux/actions/task.act
 import _ from 'lodash';
 import { MaterialIcons } from '@expo/vector-icons';
 import Loader from '../Loader';
+import ModalUpdate from "../modalUpdateTask/index"
 
 interface TaskUser {
     task_id: number,
@@ -41,6 +42,7 @@ const CardTask: React.FC<Props> = (props: Props) => {
 
     const [task, setTask] = useState('');
     const [taskUser, setTaskUser] = useState<TaskUser[]>([]);
+    const [editing, setEditing] = useState(false);
 
     const handleAddTask = async () => {
         if (task.trim() !== '') {
@@ -55,14 +57,21 @@ const CardTask: React.FC<Props> = (props: Props) => {
         getTasksByUser()
     }
 
+    const updateTask = (value: any) => {
+        console.log("Ediciones", value)
+    }
+
     const renderTask = ({ item }: { item: TaskUser }) => {
         return (
             <TouchableOpacity
                 style={styles.taskItem}
-                onPress={() => { }}>
+                onPress={(value) => updateTask(value)}>
                 <Text>{item.description}</Text>
                 <TouchableOpacity style={styles.delete} onPress={() => handleDeleteTask(item.task_id)}>
                     <MaterialIcons name="delete" size={24} color="red" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.update} onPress={() => setEditing(true)}>
+                    <MaterialIcons name="update" size={24} color="red" />
                 </TouchableOpacity>
             </TouchableOpacity>
         );
@@ -80,6 +89,7 @@ const CardTask: React.FC<Props> = (props: Props) => {
 
     return (
         <>
+            {editing && <ModalUpdate setEditing={setEditing} editing={editing} />}
             {props.isLoading ? <Loader /> : <SafeAreaView style={styles.container}>
                 <TextInput
                     style={styles.input}
@@ -103,6 +113,11 @@ const CardTask: React.FC<Props> = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
+    update: {
+        position: 'absolute',
+        right: 40,
+        top: 10,
+    },
     delete: {
         position: 'absolute',
         right: 10,
