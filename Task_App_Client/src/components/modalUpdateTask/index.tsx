@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import { updateTask } from "../../redux/actions/task.action";
+import { connect } from 'react-redux';
 
 interface Props {
     setEditing: (value: boolean) => void
     editing: boolean,
     data: any
+    _updateTask: (id_task: number, description: string) => void
+    getTasksByUser: () => void
 }
 
 const ModalUpdate = (props: Props) => {
     const [value, setValue] = useState(props.data.description);
 
-    const handleChange = (value: string) => {
+    const handleChange = async (value: string) => {
         if (!value) return
         setValue(value)
+    }
+
+    const onSave = async () => {
+        await props._updateTask(props.data.task_id, value)
+        props.getTasksByUser()
+        props.setEditing(!props.editing)
     }
 
     return (
@@ -33,7 +43,7 @@ const ModalUpdate = (props: Props) => {
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => props.setEditing(!props.editing)}>
-                            <Text style={styles.textStyle}>Guardar</Text>
+                            <Text style={styles.textStyle} onPress={onSave} >Guardar</Text>
                             <Text style={styles.textStyle}>Cancelar</Text>
                         </Pressable>
                     </View>
@@ -89,4 +99,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ModalUpdate;
+const mapDispatchToProps = (dispatc: any) => ({
+    _updateTask: (id_task: number, description: string) => dispatc(updateTask(id_task, description))
+})
+
+export default connect(null, mapDispatchToProps)(ModalUpdate);

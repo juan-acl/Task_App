@@ -91,7 +91,7 @@ const CardTask: React.FC<Props> = (props: Props) => {
 
     return (
         <>
-            {editing && <ModalUpdate setEditing={setEditing} editing={editing} data={data} />}
+            {editing && <ModalUpdate setEditing={setEditing} editing={editing} data={data} getTasksByUser={getTasksByUser} />}
             {props.isLoading ? <Loader /> : <SafeAreaView style={styles.container}>
                 <TextInput
                     style={styles.input}
