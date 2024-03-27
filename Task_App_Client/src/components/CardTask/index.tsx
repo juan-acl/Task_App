@@ -43,6 +43,7 @@ const CardTask: React.FC<Props> = (props: Props) => {
     const [task, setTask] = useState('');
     const [taskUser, setTaskUser] = useState<TaskUser[]>([]);
     const [editing, setEditing] = useState(false);
+    const [data, setData] = useState([])
 
     const handleAddTask = async () => {
         if (task.trim() !== '') {
@@ -58,7 +59,8 @@ const CardTask: React.FC<Props> = (props: Props) => {
     }
 
     const updateTask = (value: any) => {
-        console.log("Ediciones", value)
+        setEditing(true)
+        setData(value)
     }
 
     const renderTask = ({ item }: { item: TaskUser }) => {
@@ -70,7 +72,7 @@ const CardTask: React.FC<Props> = (props: Props) => {
                 <TouchableOpacity style={styles.delete} onPress={() => handleDeleteTask(item.task_id)}>
                     <MaterialIcons name="delete" size={24} color="red" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.update} onPress={() => setEditing(true)}>
+                <TouchableOpacity style={styles.update} onPress={() => updateTask(item)}>
                     <MaterialIcons name="update" size={24} color="red" />
                 </TouchableOpacity>
             </TouchableOpacity>
@@ -89,7 +91,7 @@ const CardTask: React.FC<Props> = (props: Props) => {
 
     return (
         <>
-            {editing && <ModalUpdate setEditing={setEditing} editing={editing} />}
+            {editing && <ModalUpdate setEditing={setEditing} editing={editing} data={data} />}
             {props.isLoading ? <Loader /> : <SafeAreaView style={styles.container}>
                 <TextInput
                     style={styles.input}

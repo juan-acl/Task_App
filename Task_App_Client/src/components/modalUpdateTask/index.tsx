@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 
 interface Props {
     setEditing: (value: boolean) => void
-    editing: boolean
+    editing: boolean,
+    data: any
 }
 
 const ModalUpdate = (props: Props) => {
-    const [modalVisible, setModalVisible] = useState(false);
+
+    const handleChange = (value: string) => {
+        console.log("Validando el valor", value)
+    }
+
     return (
         <View style={styles.centeredView}>
             <Modal
@@ -16,16 +22,17 @@ const ModalUpdate = (props: Props) => {
                 visible={props.editing}
                 onRequestClose={() => {
                     Alert.alert('Modal has been closed.');
-                    // setModalVisible(!modalVisible);
                     props.setEditing(!props.editing)
                 }}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalText}>Hello World!</Text>
+                        <TextInput value={props.data.description} onChangeText={handleChange} />
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => props.setEditing(!props.editing)}>
-                            <Text style={styles.textStyle}>Hide Modal</Text>
+                            <Text style={styles.textStyle}>Guardar</Text>
+                            <Text style={styles.textStyle}>Cancelar</Text>
                         </Pressable>
                     </View>
                 </View>
@@ -40,6 +47,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 22,
+        margin: 5
     },
     modalView: {
         margin: 20,
@@ -71,6 +79,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
+        marginBottom: 2
     },
     modalText: {
         marginBottom: 15,
