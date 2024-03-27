@@ -80,3 +80,29 @@ module.exports.deleteTask = (req, res) => {
       .send({ code: 400, message: "All the fields are required!" });
   }
 };
+
+module.exports.updateTask = (req, res) => {
+  const { id_task, description, updateAt } = req.body;
+  let data = {
+    description,
+    updateAt,
+  };
+  if (id_task !== undefined) {
+    databaseFuntions.updateTask(data, id_task, (error, data) => {
+      if (error) {
+        res.statusCode = 500;
+        return res
+          .status(500)
+          .send({ code: 500, ErrorMessage: "Internal server error", error });
+      }
+      return res
+        .status(200)
+        .send({ code: 200, Message: "Task updated successfully" });
+    });
+  } else {
+    res.statusCode = 400;
+    return res
+      .status(400)
+      .send({ code: 400, message: "All the fields are required!" });
+  }
+};

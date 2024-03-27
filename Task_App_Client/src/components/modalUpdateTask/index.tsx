@@ -9,9 +9,11 @@ interface Props {
 }
 
 const ModalUpdate = (props: Props) => {
+    const [value, setValue] = useState(props.data.description);
 
     const handleChange = (value: string) => {
-        console.log("Validando el valor", value)
+        if (!value) return
+        setValue(value)
     }
 
     return (
@@ -27,7 +29,7 @@ const ModalUpdate = (props: Props) => {
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalText}>Hello World!</Text>
-                        <TextInput value={props.data.description} onChangeText={handleChange} />
+                        <TextInput value={value} onChangeText={handleChange} />
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => props.setEditing(!props.editing)}>

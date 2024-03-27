@@ -81,4 +81,20 @@ databaseFunctions.deleteTask = (id, callBack) => {
   }
 };
 
+databaseFunctions.updateTask = (data, id, callBack) => {
+  if (connection) {
+    connection.query(
+      "UPDATE task SET ? WHERE task_id = " + id,
+      data,
+      (error, rows) => {
+        if (error) {
+          throw error;
+        } else {
+          callBack(null, rows);
+        }
+      }
+    );
+  }
+};
+
 module.exports = databaseFunctions;
